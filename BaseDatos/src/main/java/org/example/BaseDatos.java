@@ -1,0 +1,35 @@
+package org.example;
+
+import com.sun.jdi.connect.spi.Connection;
+
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class BaseDatos {
+    String url = "jdbc:mysql://localhost:3306/test";
+    String user = "root";
+    String password = "admin";
+try (
+    Connection conn = DriverManager.getConnection(url, user,
+            password);
+    Statement statement = conn.createStatement();
+    ResultSet resultSet = statement.executeQuery("SELECT * FROM
+            productos");
+    ) {
+        while (resultSet.next()) {
+            System.out.print(resultSet.getInt("id"));
+            System.out.print("|");
+            System.out.print(resultSet.getString("nombre"));
+            System.out.print("|");
+            System.out.print(resultSet.getDouble("precio"));
+            System.out.print("|");
+            System.out.print(resultSet.getDate("fecha_registro"));
+        }
+    } catch (
+    SQLException e) {
+        e.printStackTrace();
+    }
+
+}
